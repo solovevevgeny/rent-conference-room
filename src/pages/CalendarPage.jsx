@@ -1,51 +1,47 @@
 import React from 'react'
+import ReactDOM from 'react-dom';
+
 import { useNavigate } from "react-router-dom";
-import {useState, useEffect} from "react";
+import { useEffect} from "react";
+import { useSelector, useDispatch } from 'react-redux';
+
+import {addEvent, deleteEvent, loadEvents} from "../store/eventSlice";
 
 export const CalendarPage = () => {
 
-  const days  = ['mon', 'tue', 'wed', 'thu', 'fri'];
-  const times = ['10','11','12','13','14','15','16','17','18']
-
-  let calendarItems = [
-    {
-      name: 'FE team sync',
-      participants: 'Maria, Bob, Alex',
-      day: 'monday',
-      time: '14'
-    },
-    {
-      name: 'Daily standup',
-      participants: 'Maria, Bob, Alex',
-      day: 'friday',
-      time: '10'
-    },
-    {
-      name: 'Test',
-      participants: 'Maria, Bob, Alex',
-      day: 'monday',
-      time: '12'
-    },
-    {
-      name: 'Test 2',
-      participants: 'Maria, Bob, Alex',
-      day: 'friday',
-      time: '18'
-    },
-  ];
 
   const navigate = useNavigate();
+  const events = useSelector((state) => state.events.list);
+  const dispatch = useDispatch();
+  
+
+  const EventCard = ({name}) => {
+    return (
+      <div className='event'>
+        <div>{name}</div>
+        <div className='deleteButton' onClick={() => dispatch(deleteEvent(name)) }>X</div>
+      </div>
+    )
+  }
 
   useEffect (()=> {
-    calendarItems.forEach ( (item)=>{
-      const tableCell = document.querySelector('.' + item.day+item.time);
-      if (tableCell) {
-        tableCell.innerHTML = "<div class='event'><div>" + item.name + "</div><div class='deleteButton'>X</div></div>";
-      }
-    })
+    // console.log('changed');
+    // events.forEach ( (item)=>{
+    //   const tableCell = document.querySelector('.' + item.day+item.time);
+    //   if (tableCell) {
+    //     const element = ReactDOM.createElement
+    //     const card = <EventCard name={item.name} />
+    //     ReactDOM.render(card, tableCell);
+    //   }
+    // });
 
-  },[calendarItems])
+  },[events]);
  
+  const days  = ['mon', 'tue', 'wen', 'thu', 'fri'];
+  const times = ['10', '11', '12', '13', '14', '15', '16', '17', '18'];
+
+  let result = [];
+
   return (
     
     <div className="container">
@@ -66,95 +62,50 @@ export const CalendarPage = () => {
           </div>
 
           <div className="calendar__body">
-            <table className="calendar-table">
+
+          <table className="calendar-table">
               <thead>
                 <tr>
-                  <td>name</td>
-                  <td>Mon</td>
-                  <td>Tue</td>
-                  <td>Wed</td>
-                  <td>Thu</td>
-                  <td>Fri</td>
+                  <td>Name</td>
+                  {
+                    days.map ((item)=> {
+                      return <td>{item}</td>
+                    } )
+                  }
                 </tr>
               </thead>
               <tbody>
+                  {
+                    times.map ((time) => {
+                      return (
+                        <tr>
+                          <td>{time}</td>
+                          {
+                            days.map ((day)=> {
+                              result = events.filter ((event) => {
+                                if ((event.time == time) && (event.day == day)) {
+                                  return true;
+                                }
+                              })
 
-              
-              <tr>
-                <td>10:00</td>
-                <td className='monday10'></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td className='friday10'></td>
-              </tr>
-
-              <tr>
-                <td>11:00</td>
-                <td className='monday11'></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td className='friday11'></td>
-              </tr>
-              <tr>
-                <td>12:00</td>
-                <td className='monday12'></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td className='friday12'></td>
-              </tr>
-              <tr>
-                <td>13:00</td>
-                <td className='monday13'></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td className='friday13'></td>
-              </tr>
-              <tr>
-                <td>14:00</td>
-                <td className='monday14'></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td className='friday14'></td>
-              </tr>
-              <tr>
-                <td>15:00</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td className='friday15'></td>
-              </tr>
-              <tr>
-                <td>16:00</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td className='friday16'></td>
-              </tr>
-              <tr>
-                <td>17:00</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td className='friday17'></td>
-              </tr>
-              <tr>
-                <td>18:00</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td className='friday18'></td>
-              </tr>
+                              return (
+                                <td>
+                                    {
+                                        (result.length) ? <EventCard key={result[0].name} name={result[0].name}/> : ''
+                                    }
+                                    {/* {day} */}
+                                </td>
+                              )
+                            })
+                          }
+                        </tr>
+                      )
+                    })
+                  }
               </tbody>
-            </table>
+          </table>
+
+
           </div>
         </div>
     </div>

@@ -8,6 +8,12 @@ import {CreateEventPage} from "./pages/CreateEventPage";
 
 import {createBrowserRouter, RouterProvider} from "react-router-dom"
 
+import {Provider, useSelector} from "react-redux";
+import store from "./store/store";
+import { UseSelector } from 'react-redux';
+
+
+
 const router = createBrowserRouter([
   {
     path: '/',
@@ -22,12 +28,10 @@ const router = createBrowserRouter([
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <StrictMode>
-    <RouterProvider router={router}>
-        <App />
-    </RouterProvider>
+    <Provider store={store} >
+      <RouterProvider router={router}>
+          <App />
+      </RouterProvider>
+    </Provider>
   </StrictMode>
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
