@@ -35,7 +35,9 @@ export const eventSlice = createSlice({
         deleteEvent: (state, action) => {
           state.list = state.list.filter((item) => item.name !== action.payload)
         },
-        addEvent: (state, action) => {}
+        addEvent: (state, action) => {
+          state.list.push(action.payload)
+        }
     }
 })
 
