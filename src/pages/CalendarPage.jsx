@@ -1,11 +1,10 @@
 import React from 'react'
-import ReactDOM from 'react-dom';
 
 import { useNavigate } from "react-router-dom";
 import { useEffect} from "react";
 import { useSelector, useDispatch } from 'react-redux';
 
-import {addEvent, deleteEvent, loadEvents} from "../store/eventSlice";
+import {deleteEvent} from "../store/eventSlice";
 
 export const CalendarPage = () => {
 
@@ -24,19 +23,7 @@ export const CalendarPage = () => {
     )
   }
 
-  useEffect (()=> {
-    // console.log('changed');
-    // events.forEach ( (item)=>{
-    //   const tableCell = document.querySelector('.' + item.day+item.time);
-    //   if (tableCell) {
-    //     const element = ReactDOM.createElement
-    //     const card = <EventCard name={item.name} />
-    //     ReactDOM.render(card, tableCell);
-    //   }
-    // });
-
-  },[events]);
- 
+   
   const days  = ['mon', 'tue', 'wen', 'thu', 'fri'];
   const times = ['10', '11', '12', '13', '14', '15', '16', '17', '18'];
 
